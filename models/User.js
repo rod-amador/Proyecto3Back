@@ -3,6 +3,10 @@ const {Schema} = mongoose;
 
 
 const userSchema = new Schema({
+
+    name: {
+        type: String},
+
     email: {
         type:String,
         required: [true, "Debes poner un correo"]},
@@ -16,8 +20,8 @@ const userSchema = new Schema({
         enum: [ "google", 
                 "facebook", 
                 "youtube", 
-                "publicidad", 
-                "recomendacion"  ]}
+                "marketing", 
+                "conocidos"  ]}
     },
     {timestamps: true}
 );

@@ -3,28 +3,64 @@ const router = express.Router();
 const User = require("../models/User")
 
 // para cifrado de datos PASSWORD
-
 const bcrypt = require("bcrypt")
 const jwt = require ("jsonwebtoken")
 
-// controlador GET // Verificar que busque todos los usuarios 
+// RUTAS GET -> GENERAL Y POR ID
 router.get("/", (req,res)=>{
     User.find ()  //vacio para que traiga todo
         .then ( (users)=>res.status(200).json(  {result:users}  ))
         .catch( (err  )=>res.status(400).json(  {err}           ))
 });
 
-// POST crear usuario // Verificar ruta cree nuevo usuario
+router.get("/:id", (req, res) => {
+    const { id } = req.params;
+    User.findById( id )
+      .then((result) => {res.status(200).json({ result }); })
+      .catch((err) => res.status(400).json(err));
+  });
+  
+// POST PRUEBA BÁSICA -> NO SE USARÁ EN FRONT-> SOLO PARA TESTS
 router.post("/", (req,res)=>{
-    User.create(req.body)       // para q insomnia lo grabe
+    User.create(req.body)   
         .then ( (users)=>res.status(201).json(  {result:users}  ))
         .catch( (err  )=>res.status(400).json(  {err}           ))
 });
 
-// /SIGNUP --> REGISTRO
-//users/signup
-// insomnia check users/signup --> funcionando hash y signup
+//UPDATE -> FUNCIONANDO
+router.patch("/:id", (req, res) => {
+    const { id } = req.params;
+    const { password, ...userValues } = req.body;
+    bcrypt.hash(password, 10).then((hashedPassword) => {
+      const user = { ...userValues, password: hashedPassword };
+      // Note that new returns the updated version
+      User.findByIdAndUpdate(id, user, { new: true })
+        .then( (updated) => {
+                if (updated) {
+                    // PARA remover el password
+                    const flatUser = updated.toObject();
+                    const { password, ...userWithoutPassword } = flatUser;
+                    res.status(200).json(userWithoutPassword);} 
 
+                else {res.status(404).json({});}
+            })
+        .catch((reason) => res.status(400).json({ error: reason }));
+    });
+  });
+
+//DELETE -> FUNCIONANDO
+router.delete("/:id",  (req, res, ) => {
+    const { id } = req.params;
+    User.findByIdAndDelete(id)
+      .then((deleted) => res.status(200).json({ deleted }))
+      .catch((reason) => res.status(400).json({ error: reason }));
+  });
+    
+
+///////////////////////////////////////////////////////////////
+//SIGNUP LOGIN &LOGOUT/////////////////////////////////////////
+
+//signup -> FUNCIONANDO
 router.post("/signup", (req, res)=>{
     const {password, ...userValues} = req.body
     bcrypt.hash(password, 10)
@@ -32,23 +68,11 @@ router.post("/signup", (req, res)=>{
             const user = {...userValues, password: hashedPass}
             User.create(user)
                 .then(  ()    => res.status(200).json( {msg: "Usuario creado"} ))
-                .catch( ( err)=> res.status(400).json(err)    )
-        })
+                .catch( ( err)=> res.status(400).json(err)    );
+        });
     });
 
-// ruta del login 
-// 1° tener usuario
-// 2° validador inicial
-// 3° se busca email --> si no existe, msg
-// 4° contraseña concidir --> comparar 
-// 5° convertir en obj plano y quitar psswrd
-// 6° creamos token y hasheamos --> se agrega .env
-// 7° fecha en que expira la cookie
-// 8° regresar el json sin el password o passwrd incorrecto
-
-//contraseña incorrecta funciona bn
-// si el correo no existe funciona bien
-// 
+//login -> FUNCIONANDO
 router.post("/login", (req,res)=>{
     const {email, password} = req.body;
 
@@ -82,7 +106,7 @@ router.post("/login", (req,res)=>{
     
 });
 
-// logout
+// logout -> FUNCIONANDO
 router.post("/logout", (req,res)=>{
     res.clearCookie("token").json( {message: "logout"} )
   });

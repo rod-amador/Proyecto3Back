@@ -17,10 +17,11 @@ mongoose.connect(process.env.DB, {
     .then(x => console.log(`Connected to Mongo! DB name: "${x.connections[0].name}"`) )
     .catch(  (err)=> console.error("Error connecting to mongo", err)  )
 
-
+// aquí se agrega el link de la ruta de los modelos
 const indexRouter = require('./routes/index');
 const usersRouter = require("./routes/users");
-const contentRouter = require("./routes/contents");
+const booksRouter = require("./routes/books");
+const videosRouter = require("./routes/videos");
 const app = express();
 
 app.use(
@@ -35,8 +36,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// aquí se agregan rutas creadas arriba
 app.use('/', indexRouter);
 app.use("/users", usersRouter);
-app.use("/content", contentRouter);
+app.use("/books", booksRouter);
+app.use("/videos", videosRouter);
 
 module.exports = app;
