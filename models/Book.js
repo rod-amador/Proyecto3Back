@@ -12,7 +12,7 @@ const bookSchema = new Schema({
         required: [true, "No hay libro sin título"]
     },
 
-    autor: {
+    author: {
         type:String,
         required: [true, "Todo libro tiene nombre"]},
 
@@ -23,6 +23,11 @@ const bookSchema = new Schema({
     link: {
         type: String,
         required: [true, "Debe tener enlace para compra"]
+    },
+
+    image: {
+        type: String,
+        required: [true, "Debe tener una imagen"]
     }
 
     },

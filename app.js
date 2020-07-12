@@ -25,8 +25,9 @@ const videosRouter = require("./routes/videos");
 const app = express();
 
 app.use(
-    cors({origin: ["http://localhost:3000", "mongodb+srv://Master:Master99.@cluster0-t6tpi.mongodb.net/Book?retryWrites=true&w=majority"],
-          credentials: true,
+    cors({origin: ["http://localhost:3001", 
+                   "mongodb+srv://Master:Master99.@cluster0-t6tpi.mongodb.net/Book?retryWrites=true&w=majority"],
+                  credentials: true,
     })
   );
 
