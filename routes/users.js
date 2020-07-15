@@ -4,7 +4,9 @@ const User = require("../models/User")
 
 // para cifrado de datos PASSWORD
 const bcrypt = require("bcrypt")
-const jwt = require ("jsonwebtoken")
+const jwt = require ("jsonwebtoken");
+const { verifyToken } = require("../helpers/verifyToken");
+
 
 // RUTAS GET -> GENERAL Y POR ID
 router.get("/", (req,res)=>{
@@ -21,7 +23,7 @@ router.get("/:id", (req, res) => {
   });
   
 // POST PRUEBA BÁSICA -> NO SE USARÁ EN FRONT-> SOLO PARA TESTS
-router.post("/", (req,res)=>{
+router.post("/", verifyToken, (req,res)=>{
     User.create(req.body)   
         .then ( (users)=>res.status(201).json(  {result:users}  ))
         .catch( (err  )=>res.status(400).json(  {err}           ))

@@ -1,10 +1,10 @@
 const jwt = require ("jsonwebtoken");
 const User = require ("../models/User");
 
-exports.veryToken = (req,res,next)=>{
+exports.verifyToken = (req,res,next)=>{
     const {token} = req.cookies;
     jwt.verify(token, process.env.SECRET, (err, decoded)=>{
-        if (error) return res.status(401).json(error);
+        if (err) return res.status(401).json(err);
 
         User.findById(decoded.id)
             .then( 

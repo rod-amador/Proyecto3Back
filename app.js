@@ -24,8 +24,9 @@ const booksRouter = require("./routes/books");
 const videosRouter = require("./routes/videos");
 const app = express();
 
+// poner nombre de heroku
 app.use(
-    cors({origin: ["http://localhost:3001", 
+    cors({origin: ["http://localhost:3001", "http://nombre.herokuapp.com", "https://youtube.com",
                    "mongodb+srv://Master:Master99.@cluster0-t6tpi.mongodb.net/Book?retryWrites=true&w=majority"],
                   credentials: true,
     })
@@ -43,5 +44,9 @@ app.use('/', indexRouter);
 app.use("/users", usersRouter);
 app.use("/books", booksRouter);
 app.use("/videos", videosRouter);
+
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 module.exports = app;

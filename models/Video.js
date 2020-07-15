@@ -16,9 +16,14 @@ const videoSchema = new Schema({
         type:String,
         required: [true, "Debemos saber el tema"]},
 
-    link: {
+    url: {
         type: String,
         required: [true, "Debe tener enlace para ver"]
+    },
+
+    time:{
+        type: String,
+        required: [true, "Indica la duración del video"]
     }
 
     },
