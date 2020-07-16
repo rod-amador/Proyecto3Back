@@ -9,7 +9,9 @@ const userSchema = new Schema({
 
     email: {
         type:String,
-        required: [true, "Debes poner un correo"]},
+        required: [true, "Debes poner un correo"],
+        unique: [true, "Ya existe este corre"]
+    },
 
     password: {
         type:String,

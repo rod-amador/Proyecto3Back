@@ -5,7 +5,7 @@ const User = require("../models/User")
 // para cifrado de datos PASSWORD
 const bcrypt = require("bcrypt")
 const jwt = require ("jsonwebtoken");
-const { verifyToken } = require("../helpers/verifyToken");
+const { verifyToken } = require("../helpers/auth");
 
 
 // RUTAS GET -> GENERAL Y POR ID
