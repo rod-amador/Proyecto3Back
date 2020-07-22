@@ -26,8 +26,9 @@ const app = express();
 
 // poner nombre de heroku
 app.use(
-    cors({origin: ["http://localhost:3001", "http://lamejorinversiondetuvida.herokuapp.com",
-                   "mongodb+srv://Master:Master99.@cluster0-t6tpi.mongodb.net/Book?retryWrites=true&w=majority"],
+    cors({origin: ["http://localhost:3000", 
+                    "http://lamejorinversiondetuvida.herokuapp.com",
+                    "mongodb+srv://Master:Master99.@cluster0-t6tpi.mongodb.net/Book?retryWrites=true&w=majority"],
                   credentials: true,
     })
   );
@@ -40,10 +41,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // aquí se agregan rutas creadas arriba
-app.use('/api', indexRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/books", booksRouter);
-app.use("/api/videos", videosRouter);
+app.use("/api",         indexRouter);
+app.use("/api/users",   usersRouter);
+app.use("/api/books",   booksRouter);
+app.use("/api/videos",  videosRouter);
 
 app.use("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
