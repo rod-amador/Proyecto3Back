@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "predeploy":"cd ../proyectoFront && yarn build",
+    "deploy": "cd -r ../proyectoBack/build/ public/",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
